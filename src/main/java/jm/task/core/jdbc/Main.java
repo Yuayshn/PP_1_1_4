@@ -4,10 +4,10 @@ import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.service.UserServiceImpl;
 
 public class Main {
-    private final static UserService userService = new UserServiceImpl();
 
     public static void main(String[] args) {
         // реализуйте алгоритм здесь
+        UserService userService = new UserServiceImpl();
         userService.createUsersTable();
 
         userService.saveUser("Djo", "Baiden", (byte) 78);
