@@ -7,8 +7,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 
+import java.util.Iterator;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -62,6 +64,8 @@ public class UserDaoHibernateImpl implements UserDao {
             System.out.println("New User added");
             transaction.commit();
         } catch (HibernateException e) {
+            assert transaction != null;
+            transaction.rollback();
             e.printStackTrace();
         }
     }
@@ -87,11 +91,10 @@ public class UserDaoHibernateImpl implements UserDao {
         String sql = "select * from users";
 
         try (Session session = sessionFactory.openSession()) {
-            list = session.createNativeQuery(sql).getResultList();
+            list = session.createNativeQuery(sql).addEntity(User.class).getResultList();
         } catch (HibernateException e) {
             e.printStackTrace();
         }
-        
         return list;
     }
 
